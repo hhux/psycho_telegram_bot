@@ -99,13 +99,12 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
 
 
-import asyncio
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, JobQueue
 
 async def main():
     # Создаем приложение и регистрируем обработчики
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-    
+
     job_queue = JobQueue()
     job_queue.set_application(application)
     await job_queue.start()  # Нужно await
@@ -124,4 +123,6 @@ async def main():
 
 # Запуск программы
 if __name__ == '__main__':
-    asyncio.run(main())  # Используем asyncio для запуска
+    # Просто вызываем main() без asyncio.run(), чтобы избежать конфликта с циклом событий
+    import asyncio
+    asyncio.get_event_loop().run_until_complete(main())
