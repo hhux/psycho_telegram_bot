@@ -9,6 +9,9 @@ services:
       - "8000:8000"
     expose:
       - 8000
+    networks:
+      - psycho_network
+
   db:
     image: postgres:12.0-alpine
     volumes:
@@ -17,16 +20,28 @@ services:
       - POSTGRES_USER=psycho_user
       - POSTGRES_PASSWORD=psycho_password
       - POSTGRES_DB=psycho_dev
+    networks:
+      - psycho_network
+
   nginx:
     build: ./nginx
     ports:
       - 1337:80
     depends_on:
       - backend
+    networks:
+      - psycho_network
+
   telegram_bot:
     build: .
     command: python app/telegram_bot.py
     depends_on:
       - backend
+    networks:
+      - psycho_network
+
 volumes:
   postgres_data:
+
+networks:
+  psycho_network:
