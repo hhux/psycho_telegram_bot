@@ -99,12 +99,16 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
 
 
-if __name__ == '__main__':
+import asyncio
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+
+async def main():
     # Создаем приложение и регистрируем обработчики
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+    
     job_queue = JobQueue()
     job_queue.set_application(application)
-    await job_queue.start()
+    await job_queue.start()  # Нужно await
 
     # Команда /start
     application.add_handler(CommandHandler("start", start))
@@ -116,4 +120,8 @@ if __name__ == '__main__':
     application.add_error_handler(error_handler)
 
     # Запускаем бота
-    application.run_polling()
+    await application.run_polling()  # Нужно await
+
+# Запуск программы
+if __name__ == '__main__':
+    asyncio.run(main())  # Используем asyncio для запуска
