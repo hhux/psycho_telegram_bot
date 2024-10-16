@@ -104,7 +104,7 @@ if __name__ == '__main__':
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
     job_queue = JobQueue()
     job_queue.set_application(application)
-    job_queue.start()
+    await job_queue.start()
 
     # Команда /start
     application.add_handler(CommandHandler("start", start))
