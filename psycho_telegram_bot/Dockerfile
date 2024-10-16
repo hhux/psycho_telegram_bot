@@ -12,11 +12,10 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev \
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo \
     && pip install --upgrade pip
 
-# install dependencies
-RUN pip install --upgrade pip
+# install python dependencies
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
