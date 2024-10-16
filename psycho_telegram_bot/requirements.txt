@@ -8,6 +8,7 @@ charset-normalizer==3.3.2
 cleo==2.1.0
 click==8.1.7
 crashtest==0.4.1
+cryptography==3.4.8
 distlib==0.3.8
 Django==3.0.7
 dulwich==0.21.7
