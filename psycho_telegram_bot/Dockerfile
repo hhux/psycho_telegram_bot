@@ -12,7 +12,8 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev \
+    && pip install --upgrade pip
 
 # install dependencies
 RUN pip install --upgrade pip
