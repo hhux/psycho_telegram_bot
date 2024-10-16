@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  backend:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/psycho_telegram_bot
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+  db:
+    image: postgres:12.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=psycho_user
+      - POSTGRES_PASSWORD=psycho_password
+      - POSTGRES_DB=psycho_dev
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+  telegram_bot:
+    build: .
+    command: python app/telegram_bot.py
+    depends_on:
+      - backend
+volumes:
+  postgres_data:
