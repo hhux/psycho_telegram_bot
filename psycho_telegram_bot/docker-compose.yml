@@ -22,7 +22,7 @@ services:
     ports:
       - 1337:80
     depends_on:
-      - web
+      - backend
   telegram_bot:
     build: .
     command: python app/telegram_bot.py
