@@ -99,6 +99,7 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
 
 
+import asyncio
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, JobQueue
 
 async def main():
@@ -121,8 +122,12 @@ async def main():
     # Запускаем бота
     await application.run_polling()  # Нужно await
 
-# Запуск программы
 if __name__ == '__main__':
-    # Просто вызываем main() без asyncio.run(), чтобы избежать конфликта с циклом событий
-    import asyncio
-    asyncio.get_event_loop().run_until_complete(main())
+    # Проверяем, запущен ли цикл событий, и используем его, если он активен
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:  # Если цикла событий нет, создаем новый
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    loop.run_until_complete(main())
