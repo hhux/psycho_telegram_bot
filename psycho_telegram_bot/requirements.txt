@@ -7,7 +7,7 @@ cffi==1.17.0
 openai
 python-telegram-bot==21.6
 python-telegram-bot[job-queue]
-djangorestframework==3.15.2
+djangorestframework==3.14.0
 charset-normalizer==3.3.2
 cleo==2.1.0
 click==8.1.7
