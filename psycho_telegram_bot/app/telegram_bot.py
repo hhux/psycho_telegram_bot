@@ -123,11 +123,6 @@ async def main():
     await application.run_polling()  # Нужно await
 
 if __name__ == '__main__':
-    # Проверяем, запущен ли цикл событий, и используем его, если он активен
-    try:
-        loop = asyncio.get_running_loop()
-    except RuntimeError:  # Если цикла событий нет, создаем новый
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-
-    loop.run_until_complete(main())
+    import asyncio
+    
+    asyncio.run(main())
