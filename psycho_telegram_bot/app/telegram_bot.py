@@ -11,7 +11,7 @@ from prompt import text
 TELEGRAM_TOKEN = '8095205112:AAE7gmwyImi7LkPanQwQ8OMkiU_FyY4HHd4'
 OPENAI_API_KEY = 'sk-svcacct-ghH7e9F_wXQ6rWrzgLcZf3pqBX9zdZ3mtbh3aVp62PEi7zQjl30rTaclKIaT3BlbkFJKtSEvjdhHrZgiCRizALyh4ixpePVNbJlrvtNayi8wUlkX2OjKW5qaOnUhngA'
 
-API_BASE_URL = 'http://45.32.22.217:8000'
+API_BASE_URL = 'http://backend:8000'
 
 openai.api_key = OPENAI_API_KEY
 
