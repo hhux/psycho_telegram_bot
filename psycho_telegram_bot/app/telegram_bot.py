@@ -123,10 +123,20 @@ async def main():
     await application.run_polling()  # Нужно await
 
 if __name__ == '__main__':
-    import asyncio
-    
-    if not asyncio.get_event_loop().is_running():
-        asyncio.run(main())
-    else:
-        asyncio.get_event_loop().create_task(main())
+    # Создаем приложение и регистрируем обработчики
+    application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+    job_queue = JobQueue()
+    job_queue.set_application(application)
+    job_queue.start()
 
+    # Команда /start
+    application.add_handler(CommandHandler("start", start))
+
+    # Обработчик всех текстовых сообщений
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+    # Обработчик ошибок
+    application.add_error_handler(error_handler)
+
+    # Запускаем бота
+    application.run_polling()
