@@ -41,6 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             else:
                 await update.message.reply_text(
                     "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
+                
         else:
             # Если пользователя нет в базе, регистрируем его
             create_response = requests.post(f"{API_BASE_URL}/users/create/", json={"user_id": user_id})
@@ -68,6 +69,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         if not user_data['is_active']:
             await update.message.reply_text(
                 "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
+                logging.info(f"{user_id} подписка закончилась. Пользователь отключен")
             return
     else:
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
@@ -93,7 +95,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     gpt_response = response.choices[0].message['content']
     user_sessions[user_id].append({"role": "assistant", "content": gpt_response})
     await update.message.reply_text(gpt_response)
-    logging.info(f"Ответ бота: {gpt_response[:15]}...")
+    logging.info(f"Ответ бота: {gpt_response[:35]}...")
 
 
 async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
