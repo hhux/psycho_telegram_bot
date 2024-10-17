@@ -125,4 +125,8 @@ async def main():
 if __name__ == '__main__':
     import asyncio
     
-    asyncio.run(main())
+    if not asyncio.get_event_loop().is_running():
+        asyncio.run(main())
+    else:
+        asyncio.get_event_loop().create_task(main())
+
