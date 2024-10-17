@@ -67,9 +67,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     if response.status_code == 200:
         user_data = next((user for user in users if user['user_id'] == user_id), None)
         if not user_data['is_active']:
+            logging.info(f"{user_id} подписка закончилась. Пользователь отключен")
             await update.message.reply_text(
                 "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
-                logging.info(f"{user_id} подписка закончилась. Пользователь отключен")
             return
     else:
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
