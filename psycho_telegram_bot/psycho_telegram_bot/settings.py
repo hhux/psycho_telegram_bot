@@ -25,7 +25,7 @@ DEBUG=False
 SECRET_KEY='*mfdqyd8yglu9pap2ca%dehkfxdf3-r5)il#8z+tt*49d+-q)x'
 # 'DJANGO_ALLOWED_HOSTS' должен быть в виде одной строки с хостами разделенными символом пробела
 # Для примера: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
-ALLOWED_HOSTS = ['45.32.22.217']# Application definition
+ALLOWED_HOSTS = ['*']# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
