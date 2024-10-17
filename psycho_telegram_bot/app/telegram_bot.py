@@ -93,6 +93,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     gpt_response = response.choices[0].message['content']
     user_sessions[user_id].append({"role": "assistant", "content": gpt_response})
     await update.message.reply_text(gpt_response)
+    logging.info(f"Ответ бота: {gpt_response[:15]}...")
 
 
 async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
