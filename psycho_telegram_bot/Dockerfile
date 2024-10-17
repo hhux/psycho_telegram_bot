@@ -25,5 +25,11 @@ COPY ./entrypoint.sh .
 # copy project
 COPY . .
 
+# create directory for static files
+RUN mkdir -p /psycho_telegram_bot/staticfiles
+
+# collect static files
+RUN python manage.py collectstatic --no-input
+
 # Run the telegram bot script
 CMD ["python", "app/telegram_bot.py"]
