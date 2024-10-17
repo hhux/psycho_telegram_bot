@@ -4,7 +4,7 @@ build==1.2.1
 CacheControl==0.14.0
 certifi==2024.7.4
 cffi==1.17.0
-openai
+openai==0.28
 python-telegram-bot==21.6
 python-telegram-bot[job-queue]
 djangorestframework==3.14.0
