@@ -1,5 +1,6 @@
 from datetime import timedelta
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 from rest_framework import generics
 from datetime import datetime, timedelta
@@ -12,14 +13,14 @@ from .serializers import UserSerializer
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
 
 class UserCreateView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    #permission_classes = [IsAuthenticated]
-
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 def check_user_status() -> None:
     """

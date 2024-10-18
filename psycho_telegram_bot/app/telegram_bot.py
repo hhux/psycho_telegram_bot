@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
-
+import asyncio
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, JobQueue
 import openai
 import requests
 from telegram import Update
@@ -31,7 +32,10 @@ PROMPT_TEMPLATE = (f"{text}")
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     # Получаем список пользователей и проверяем, существует ли пользователь
-    response = requests.get(f"{API_BASE_URL}/users/")
+    headers = {
+        'Authorization': f'Token a93e3c1ca2443165cbbf1688d4fdc0f2f7011a43'
+    }
+    response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
     if response.status_code == 200:
         users = response.json()
         user_data = next((user for user in users if user['user_id'] == user_id), None)
@@ -44,7 +48,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 
         else:
             # Если пользователя нет в базе, регистрируем его
-            create_response = requests.post(f"{API_BASE_URL}/users/create/", json={"user_id": user_id})
+            create_response = requests.post(f"{API_BASE_URL}/users/create/", headers=headers, json={"user_id": user_id})
             if create_response.status_code == 201:
                 user_sessions[user_id] = []
                 await update.message.reply_text(
@@ -60,9 +64,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     user_message = update.message.text
 
     logging.info(f"Сообщение от пользователя {user_id}: {user_message}")
-
+    headers = {
+        'Authorization': f'Token a93e3c1ca2443165cbbf1688d4fdc0f2f7011a43'
+    }
     # Проверяем статус пользователя перед ответом
-    response = requests.get(f"{API_BASE_URL}/users/")
+    response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
     users = response.json()
     if response.status_code == 200:
         user_data = next((user for user in users if user['user_id'] == user_id), None)
@@ -100,10 +106,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     logging.error(msg="Exception while handling an update:", exc_info=context.error)
-
-
-import asyncio
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, JobQueue
 
 async def main():
     # Создаем приложение и регистрируем обработчики
