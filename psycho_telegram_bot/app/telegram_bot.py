@@ -33,7 +33,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
     # Получаем список пользователей и проверяем, существует ли пользователь
     headers = {
-        'Authorization': f'Token a93e3c1ca2443165cbbf1688d4fdc0f2f7011a43'
+        'Authorization': f'Token 4bac9493762a9c397c6ffd53ff60d71400d6e99a'
     }
     response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
     if response.status_code == 200:
@@ -65,7 +65,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
     logging.info(f"Сообщение от пользователя {user_id}: {user_message}")
     headers = {
-        'Authorization': f'Token a93e3c1ca2443165cbbf1688d4fdc0f2f7011a43'
+        'Authorization': f'Token 4bac9493762a9c397c6ffd53ff60d71400d6e99a'
     }
     # Проверяем статус пользователя перед ответом
     response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
