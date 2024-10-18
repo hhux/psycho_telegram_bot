@@ -32,7 +32,7 @@ services:
     depends_on:
       - backend
     volumes:
-      - ./psycho_telegram_bot/staticfiles:/psycho_telegram_bot/staticfiles
+      - ./psycho_telegram_bot/staticfiles:/static
     networks:
       - psycho_network
 
