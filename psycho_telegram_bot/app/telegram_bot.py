@@ -78,8 +78,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             create_response = requests.post(f"{API_BASE_URL}/users/create/", headers=headers, json={"user_id": user_id})
             if create_response.status_code == 201:
                 user_sessions[user_id] = []
-                await update.message.reply_text(
-                    "Привет! Ваш аккаунт создан. Задайте ваш вопрос, и я постараюсь помочь.")
             else:
                 await update.message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
                 return
