@@ -41,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         user_data = next((user for user in users if user['user_id'] == user_id), None)
         if user_data:
             if user_data['is_active']:
-                await update.message.reply_text("Привет! Я бот-психолог. Задайте ваш вопрос, и я постараюсь помочь.")
+                await update.message.reply_text("Привет! Я бот-психолог. Задайте ваш вопрос, и я постараюсь помочь. Наш диалог анонимен и конфиденциален, поэтому Вы можете свободно делиться своими мыслями.")
             else:
                 await update.message.reply_text(
                     "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
