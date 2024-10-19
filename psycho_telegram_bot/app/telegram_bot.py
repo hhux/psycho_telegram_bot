@@ -52,9 +52,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             if create_response.status_code == 201:
                 user_sessions[user_id] = []
                 await update.message.reply_text(
-                    "Привет! Ваш аккаунт создан. Задайте ваш вопрос, и я постараюсь помочь.")
+                    "Привет! Я бот-психолог. Задайте ваш вопрос, и я постараюсь помочь. Наш диалог анонимен и конфиденциален, поэтому Вы можете свободно делиться своими мыслями.")
             else:
-                await update.message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
+                await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
     else:
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
 
