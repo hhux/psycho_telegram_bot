@@ -67,13 +67,24 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     headers = {
         'Authorization': f'Token 4bac9493762a9c397c6ffd53ff60d71400d6e99a'
     }
-    # Проверяем статус пользователя перед ответом
+
+    # Проверяем, зарегистрирован ли пользователь в базе данных
     response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
-    users = response.json()
     if response.status_code == 200:
+        users = response.json()
         user_data = next((user for user in users if user['user_id'] == user_id), None)
-        if not user_data['is_active']:
-            logging.info(f"{user_id} подписка закончилась. Пользователь отключен")
+        if not user_data:
+            # Если пользователя нет в базе, регистрируем его
+            create_response = requests.post(f"{API_BASE_URL}/users/create/", headers=headers, json={"user_id": user_id})
+            if create_response.status_code == 201:
+                user_sessions[user_id] = []
+                await update.message.reply_text(
+                    "Привет! Ваш аккаунт создан. Задайте ваш вопрос, и я постараюсь помочь.")
+            else:
+                await update.message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
+                return
+        elif not user_data['is_active']:
+            # Если подписка истекла
             await update.message.reply_text(
                 "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
             return
