@@ -47,4 +47,4 @@ def deactivate_users(request) -> Response:
     # Логируем количество деактивированных пользователей
     logging.info(f"Total deactivated users: {total_count}")
 
-    return total_count
+    return Response(status=204)
