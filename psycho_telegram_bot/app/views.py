@@ -30,18 +30,21 @@ class UserCreateView(generics.CreateAPIView):
 #@permission_classes([TokenAuthentication])
 def deactivate_users():
     # Определяем дату 30 дней назад
-    logger.info(f"поехали")
+    logging.basicConfig(
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+        level=logging.INFO
+    )
     threshold_date = timezone.now() - timedelta(days=30)
-    logger.info(f"ищуем узера")
+    logging.info(f"ищуем узера")
     # Запрашиваем пользователей, у которых дата оплаты более 30 дней назад или отсутствует
     users_to_deactivate = User.objects.filter(
         last_payment__lt=threshold_date
     ) | User.objects.filter(last_payment__isnull=True)
-    logger.info(f"деактивируем узера")
+    logging.info(f"деактивируем узера")
     # Деактивируем пользователей и получаем количество
     total_count = users_to_deactivate.update(is_active=False)
     
     # Логируем количество деактивированных пользователей
-    logger.info(f"Total deactivated users: {total_count}")
+    logging.info(f"Total deactivated users: {total_count}")
 
     return total_count
