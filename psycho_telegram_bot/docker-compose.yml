@@ -60,7 +60,3 @@ volumes:
 
 networks:
   psycho_network:
-
-# cronjob
-SHELL=/bin/sh
-0 0 * * * /shedule.sh > /proc/1/fd/1 2>/proc/1/fd/2
