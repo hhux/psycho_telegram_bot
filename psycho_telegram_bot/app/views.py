@@ -1,11 +1,11 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
+import logging
 
 from rest_framework import generics
 from datetime import datetime, timedelta
 from django.utils import timezone
-
 from .models import User
 from .serializers import UserSerializer
 
@@ -22,17 +22,20 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-def check_user_status() -> None:
-    """
-    Запрашивает список пользователей, чтобы проверить их статус и деактивировать пользователей у
-    которых дата последней оплаты была больше >30 дней назад.
-    """
+def deactivate_users():
+    # Определяем дату 30 дней назад
+    threshold_date = datetime.now() - timedelta(days=30)
+    
+    # Запрашиваем пользователей, у которых дата оплаты более 30 дней назад или отсутствует
+    users_to_deactivate = User.objects.filter(
+        last_payment__lt=threshold_date
+    ) | User.objects.filter(last_payment__isnull=True)
+    
+    # Деактивируем пользователей и получаем количество
+    total_count = users_to_deactivate.update(is_active=False)
+    
+    # Логируем количество деактивированных пользователей
+    logger.info(f"Total deactivated users: {total_count}")
 
-    # Calculate the date 30 days ago from now
-    thirty_days_ago = timezone.now() - datetime.timedelta(days=30)
+    return total_count
 
-    # Fetch users whose last payment date is older than 30 days
-    inactive_users = User.objects.filter(last_payment_date__lt=thirty_days_ago, is_active=True)
-
-    # Deactivate those users
-    inactive_users.update(is_active=False)
