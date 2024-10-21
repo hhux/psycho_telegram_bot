@@ -26,9 +26,10 @@ class UserCreateView(generics.CreateAPIView):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def deactivate_users(request) -> Response:
+@permission_classes([TokenAuthentication])
+def deactivate_users():
     # Определяем дату 30 дней назад
-    threshold_date = datetime.now() - timedelta(days=30)
+    threshold_date = timezone.now() - timedelta(days=30)
     
     # Запрашиваем пользователей, у которых дата оплаты более 30 дней назад или отсутствует
     users_to_deactivate = User.objects.filter(
@@ -42,4 +43,3 @@ def deactivate_users(request) -> Response:
     logger.info(f"Total deactivated users: {total_count}")
 
     return total_count
-
