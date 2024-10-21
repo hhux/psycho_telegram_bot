@@ -25,6 +25,7 @@ class UserCreateView(generics.CreateAPIView):
 
 
 @api_view(['GET'])
+@permission_classes([]) 
 #@permission_classes([IsAuthenticated])
 #@permission_classes([TokenAuthentication])
 def deactivate_users():
