@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from app.models import deactivate_users
+from app.deactivate_users import deactivate_users
 
 class Command(BaseCommand):
     help = 'Deactivates users whose last payment was more than 30 days ago.'
