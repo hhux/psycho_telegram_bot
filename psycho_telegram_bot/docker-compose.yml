@@ -44,17 +44,6 @@ services:
     networks:
       - psycho_network
 
-  scheduler:
-    image: alpine
-    command: ["/bin/sh", "-c", "crontab /etc/cron.d/deactivate_users && crond -f"]
-    volumes:
-      - ./shedule.sh:/shedule.sh
-      - ./cronjob:/etc/cron.d/deactivate_users
-    networks:
-      - psycho_network
-    depends_on:
-      - backend
-
 volumes:
   postgres_data:
 
