@@ -25,9 +25,8 @@ class UserCreateView(generics.CreateAPIView):
 
 
 @api_view(['GET'])
-@permission_classes([]) 
-#@permission_classes([IsAuthenticated])
-#@permission_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@permission_classes([TokenAuthentication])
 def deactivate_users(request) -> Response:
     # Определяем дату 30 дней назад
     logging.basicConfig(
