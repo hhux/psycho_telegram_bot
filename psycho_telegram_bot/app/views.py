@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from .models import User
 from .serializers import UserSerializer
-
+from rest_framework.decorators import permission_classes
 
 class UserListView(generics.ListAPIView):
     queryset = User.objects.all()
