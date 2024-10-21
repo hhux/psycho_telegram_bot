@@ -34,12 +34,11 @@ def deactivate_users(request) -> Response:
         level=logging.INFO
     )
     threshold_date = timezone.now() - timedelta(days=30)
-    logging.info(f"ищуем узера")
     # Запрашиваем пользователей, у которых дата оплаты более 30 дней назад или отсутствует
     users_to_deactivate = User.objects.filter(
         last_payment__lt=threshold_date
     ) | User.objects.filter(last_payment__isnull=True)
-    logging.info(f"деактивируем узера")
+    logging.info(f"деактивируем безбилетников")
     # Деактивируем пользователей и получаем количество
     total_count = users_to_deactivate.update(is_active=False)
     
