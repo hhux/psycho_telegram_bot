@@ -20,7 +20,7 @@ RUN apk update \
 RUN apk add --no-cache crond
 
 # copy crontab file
-COPY ./crontab /etc/crontabs/root
+COPY ./crontab /shedule.sh
 
 # start cron in the background and run the telegram bot
 CMD crond && python app/telegram_bot.py
