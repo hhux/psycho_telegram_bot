@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 import logging
-
+from rest_framework.decorators import api_view
 from rest_framework import generics
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -22,7 +22,10 @@ class UserCreateView(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-def deactivate_users():
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def deactivate_users(request) -> Response:
     # Определяем дату 30 дней назад
     threshold_date = datetime.now() - timedelta(days=30)
     
