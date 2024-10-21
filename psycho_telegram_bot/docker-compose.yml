@@ -1,3 +1,4 @@
+#docker-compose.yml
 version: '3.7'
 services:
   backend:
@@ -6,7 +7,6 @@ services:
     volumes:
       - .:/psycho_telegram_bot
       - ./psycho_telegram_bot/staticfiles:/psycho_telegram_bot/staticfiles
-
     ports:
       - "8000:8000"
     expose:
@@ -44,8 +44,23 @@ services:
     networks:
       - psycho_network
 
+  scheduler:
+    image: alpine
+    command: ["/bin/sh", "-c", "crontab /etc/cron.d/deactivate_users && crond -f"]
+    volumes:
+      - ./shedule.sh:/shedule.sh
+      - ./cronjob:/etc/cron.d/deactivate_users
+    networks:
+      - psycho_network
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
 
 networks:
   psycho_network:
+
+# cronjob
+SHELL=/bin/sh
+0 0 * * * /shedule.sh > /proc/1/fd/1 2>/proc/1/fd/2
