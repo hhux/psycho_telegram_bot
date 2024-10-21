@@ -36,13 +36,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         'Authorization': f'Token 4bac9493762a9c397c6ffd53ff60d71400d6e99a'
     }
     response = requests.get(f"{API_BASE_URL}/users/", headers=headers)
-
-    
-    logging.info("DEACTIVACIJA")
-
-                 
-    res = requests.get(f"{API_BASE_URL}/deactivate_users/", headers=headers)
-    logging.info("DEACTIVACIJA end")
     if response.status_code == 200:
         users = response.json()
         user_data = next((user for user in users if user['user_id'] == user_id), None)
