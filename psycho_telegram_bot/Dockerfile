@@ -13,7 +13,17 @@ ENV PYTHONUNBUFFERED 1
 # install dependencies
 RUN apk update \
     && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo \
+    && apk add --no-cache busybox-suid \
     && pip install --upgrade pip
+
+# install cron
+RUN apk add --no-cache crond
+
+# copy crontab file
+COPY ./crontab /etc/crontabs/root
+
+# start cron in the background and run the telegram bot
+CMD crond && python app/telegram_bot.py
 
 # install python dependencies
 COPY ./requirements.txt .
