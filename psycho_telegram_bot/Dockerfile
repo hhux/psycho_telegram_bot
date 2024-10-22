@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
+    && apk add --no-cache curl postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
     && pip install --upgrade pip
 
 # install python dependencies
