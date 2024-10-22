@@ -13,6 +13,7 @@ services:
     command: crond -f
     depends_on:
       - backend
+    privileged: true
     networks:
       - psycho_network
 
