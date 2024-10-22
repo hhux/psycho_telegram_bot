@@ -38,11 +38,12 @@ services:
 
   telegram_bot:
     build: .
-    command: python app/telegram_bot.py
+    command: sh -c "crond && python app/telegram_bot.py"
     depends_on:
       - backend
     networks:
       - psycho_network
+
 
 volumes:
   postgres_data:
