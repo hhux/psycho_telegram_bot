@@ -38,4 +38,4 @@ RUN chmod +x /psycho_telegram_bot/shedule.sh
 # Add the cron job
 RUN echo "41 16 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 # Run cron and the telegram bot
-CMD ["sh", "-c", "crond && python app/telegram_bot.py"]
+CMD ["sh", "-c", "crond -f && python app/telegram_bot.py"]
