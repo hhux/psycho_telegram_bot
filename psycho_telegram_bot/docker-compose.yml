@@ -38,7 +38,7 @@ services:
 
   telegram_bot:
     build: .
-    command: sh -c "crond && python app/telegram_bot.py"
+    command: sh -c "crond -f && python app/telegram_bot.py"
     depends_on:
       - backend
     networks:
