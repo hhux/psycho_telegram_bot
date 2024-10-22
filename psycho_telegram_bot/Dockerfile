@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo \
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
     && pip install --upgrade pip
 
 # install python dependencies
@@ -31,5 +31,12 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
-# Run the telegram bot script
-CMD ["python", "app/telegram_bot.py"]
+# copy schedule.sh script
+COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
+RUN chmod +x /psycho_telegram_bot/shedule.sh
+
+# Add the cron job
+RUN echo "28 16 * /psycho_telegram_bot/shedule.sh" > /etc/crontabs/root
+
+# Run cron and the telegram bot
+CMD ["sh", "-c", "crond && python app/telegram_bot.py"]
