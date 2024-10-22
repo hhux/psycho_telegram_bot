@@ -36,14 +36,21 @@ services:
     networks:
       - psycho_network
 
-  telegram_bot:
-    build: .
-    command: sh -c "crond && python app/telegram_bot.py"
-    depends_on:
-      - backend
-    networks:
-      - psycho_network
+   telegram_bot:
+     build: .
+     command: python app/telegram_bot.py
+     depends_on:
+       - backend
+     networks:
+       - psycho_network
 
+   cron_service:
+     build: .
+     command: crond -f
+     depends_on:
+       - backend
+     networks:
+       - psycho_network
 
 volumes:
   postgres_data:
