@@ -21,4 +21,4 @@ RUN python manage.py collectstatic --no-input
 COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
 
-RUN echo "3 8 1 8 * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "4 1 1 8 * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
