@@ -1,0 +1,23 @@
+# Dockerfile.cron
+FROM python:3.9-slim
+
+# Set up working directory
+WORKDIR /app
+
+# Copy the necessary script
+COPY ./psycho_telegram_bot/shedule.sh /app/shedule.sh
+
+# Install cron
+RUN apt-get update && apt-get install -y cron
+
+# Add crontab file
+COPY crontab /etc/cron.d/my-cron-job
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/my-cron-job && chmod +x /app/shedule.sh
+
+# Apply cron job
+RUN crontab /etc/cron.d/my-cron-job
+
+# Run the command on container startup
+CMD ["cron", "-f"]
