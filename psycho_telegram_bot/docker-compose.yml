@@ -45,7 +45,7 @@ services:
 
   cron:
     build: .
-    command: crond -f
+    command: ["sh", "-c", "crond -f"]
     volumes:
       - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh
     networks:
