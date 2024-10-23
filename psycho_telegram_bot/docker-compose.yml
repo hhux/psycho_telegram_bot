@@ -44,13 +44,12 @@ services:
       - psycho_network
 
   cron:
-    build:
-      context: .
-      dockerfile: Dockerfile.cron
-    container_name: cron_container
+    build: .
+    command: ["/bin/sh", "-c", "echo '3 1 1 4 * /psycho_telegram_bot/shedule.sh' | crontab - && crond -f"]
     volumes:
-      - ./psycho_telegram_bot:/app
-    restart: unless-stopped
+      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh
+    networks:
+      - psycho_network
 
 volumes:
   postgres_data:
