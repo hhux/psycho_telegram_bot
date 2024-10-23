@@ -43,6 +43,15 @@ services:
     networks:
       - psycho_network
 
+  cron:
+    build:
+      context: .
+      dockerfile: Dockerfile.cron
+    container_name: cron_container
+    volumes:
+      - ./psycho_telegram_bot:/app
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 
