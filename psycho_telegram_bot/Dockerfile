@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo \
     && pip install --upgrade pip
 
 # install python dependencies
@@ -31,12 +31,8 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
-# copy schedule.sh script
-COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
-RUN chmod +x /psycho_telegram_bot/shedule.sh
-
-# Expose the necessary ports for Django and cron
+# Expose the necessary port for Django
 EXPOSE 8000
 
-# Define default command for cron container
-CMD ["sh", "-c", "crond -f"]
+# Define default command for the bot container
+CMD ["python", "app/telegram_bot.py"]
