@@ -17,12 +17,8 @@ RUN mkdir -p /var/log/cron && \
     touch /var/log/cron/cron.log && \
     chmod 0644 /var/log/cron/cron.log
 
-# Создание crontab файла
+# Создание crontab файла с правильным синтаксисом
 RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron/cron.log 2>&1" > /etc/crontabs/root && \
     chmod 0644 /etc/crontabs/root
 
-# Проверка конфигурации
-RUN crontab -l
-
-# Запуск crond в foreground режиме
 CMD ["crond", "-f", "-d", "8"]
