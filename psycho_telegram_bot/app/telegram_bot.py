@@ -86,7 +86,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             await update.message.reply_text(
                 "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
             await update.message.reply_text(
-                f"Переведите 1100 рублей по СБП на номер +79181051685 (Цифра банк) !ОБЯЗАТЕЛЬНО! c комментарием {user_data['comment']}. Платежи без комментария не возвращаются.")
+                f"Переведите 1100 рублей по СБП на номер +79181051685 (Цифра банк) \n!ОБЯЗАТЕЛЬНО! c комментарием {user_data['comment']}. Платежи без комментария не возвращаются.")
             return
     else:
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
