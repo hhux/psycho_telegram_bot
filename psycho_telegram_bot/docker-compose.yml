@@ -23,7 +23,6 @@ services:
       - POSTGRES_DB=psycho_dev
     networks:
       - psycho_network
-      - backend
 
   nginx:
     build: ./nginx
@@ -41,14 +40,6 @@ services:
     command: python app/telegram_bot.py
     depends_on:
       - backend
-    networks:
-      - psycho_network
-
-  cron:
-    build: .
-    command: ["sh", "-c", "crond -f && echo '36 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1' | crontab -"]
-    volumes:
-      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh
     networks:
       - psycho_network
 
