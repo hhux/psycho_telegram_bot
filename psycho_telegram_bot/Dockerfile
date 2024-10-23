@@ -34,7 +34,7 @@ COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
 
 # Add the cron job
-RUN echo "0 8 1 8 * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "1 1 0 7 * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 
 # Define the default command for this Dockerfile (only for Telegram bot)
 CMD ["python", "app/telegram_bot.py"]
