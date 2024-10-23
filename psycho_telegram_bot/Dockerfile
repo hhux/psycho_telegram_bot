@@ -38,9 +38,10 @@ RUN mkdir -p /var/log
 COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
+RUN chmod +x /psycho_telegram_bot/shedule.sh
 
 # Add the cron job
-RUN echo "26 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "27 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 
 # Set entrypoint for the container
-ENTRYPOINT ["crond", "-f"]
+ENTRYPOINT ["sh", "-c", "crond -f && tail -f /var/log/cron.log"]
