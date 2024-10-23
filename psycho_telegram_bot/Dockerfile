@@ -7,13 +7,13 @@ FROM python:3.8.3-alpine
 WORKDIR /psycho_telegram_bot
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN apk update \
-&& apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
-&& pip install --upgrade pip
+    && apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
+    && pip install --upgrade pip
 
 # install python dependencies
 COPY ./requirements.txt .
@@ -31,17 +31,12 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
-# create directory for cron logs
-RUN mkdir -p /var/log
-
 # copy schedule.sh script
 COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
-RUN chmod +x /psycho_telegram_bot/shedule.sh
-RUN chmod +x /psycho_telegram_bot/shedule.sh
 
-# Add the cron job
-RUN echo "27 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+# Expose the necessary ports for Django and cron
+EXPOSE 8000
 
-# Set entrypoint for the container
-ENTRYPOINT ["sh", "-c", "crond -f && tail -f /var/log/cron.log"]
+# Define default command for cron container
+CMD ["sh", "-c", "crond -f"]
