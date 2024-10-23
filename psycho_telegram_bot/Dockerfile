@@ -31,9 +31,10 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
-# copy schedule.sh script
-COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
-RUN chmod +x /psycho_telegram_bot/shedule.sh
+# copy schedule.sh script and make sure directory exists
+RUN mkdir -p /psycho_telegram_bot \
+    && cp ./shedule.sh /psycho_telegram_bot/shedule.sh \
+    && chmod +x /psycho_telegram_bot/shedule.sh
 
 # copy supervisor config
 COPY supervisord.conf /etc/supervisord.conf
