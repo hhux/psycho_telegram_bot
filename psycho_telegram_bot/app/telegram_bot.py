@@ -79,12 +79,14 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             if create_response.status_code == 201:
                 user_sessions[user_id] = []
             else:
-                await update.message.reply_text("Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.")
+                await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
                 return
         elif not user_data['is_active']:
             # Если подписка истекла
             await update.message.reply_text(
                 "Ваша подписка истекла. Пожалуйста, продлите подписку, чтобы продолжить использовать бота.")
+            await update.message.reply_text(
+                f"Переведите 1100 рублей по СБП на номер +7 918 105 16 85 c комментарием {user_data['comment']} ")
             return
     else:
         await update.message.reply_text("Произошла ошибка. Пожалуйста, попробуйте позже.")
