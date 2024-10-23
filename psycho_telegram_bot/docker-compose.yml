@@ -44,12 +44,18 @@ services:
       - psycho_network
 
   cron:
-    build: .
-    command: ["/bin/sh", "-c", "echo '* * * * * /psycho_telegram_bot/shedule.sh' | crontab - && crond -f"]
+    build: 
+      context: .
+      dockerfile: Dockerfile.cron
+    command: sh -c "crond -f -d 8 >> /var/log/cron.log 2>&1"
     volumes:
-      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh:ro
+      - ./shedule.sh:/psycho_telegram_bot/shedule.sh
+      - cron_logs:/var/log
     networks:
       - psycho_network
+
+volumes:
+  cron_logs:
 
 volumes:
   postgres_data:
