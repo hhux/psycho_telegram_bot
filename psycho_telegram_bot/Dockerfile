@@ -31,9 +31,12 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
+# create directory for cron logs
+RUN mkdir -p /var/log
+
 # copy schedule.sh script
 COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
 
 # Add the cron job
-RUN echo "21 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "24 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
