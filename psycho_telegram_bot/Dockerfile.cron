@@ -1,23 +1,23 @@
-# Dockerfile.cron
-FROM python:3.9-slim
+FROM python:3.8.3-alpine
 
-# Set up working directory
-WORKDIR /app
+# Установка необходимых пакетов
+RUN apk add --no-cache \
+    curl \
+    dcron \
+    tzdata
 
-# Copy the necessary script
-COPY ./psycho_telegram_bot/shedule.sh /app/shedule.sh
+# Установка московского времени
+RUN cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
+    echo "Europe/Moscow" > /etc/timezone
 
-# Install cron
-RUN apt-get update && apt-get install -y cron
+WORKDIR /psycho_telegram_bot
 
-# Add crontab file
-COPY crontab /etc/cron.d/my-cron-job
+# Копирование и установка прав на скрипт
+COPY ./shedule.sh /psycho_telegram_bot/
+RUN chmod +x /psycho_telegram_bot/shedule.sh
 
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/my-cron-job && chmod +x /app/shedule.sh
+# Создание лог-файла для cron
+RUN touch /var/log/cron.log
 
-# Apply cron job
-RUN crontab /etc/cron.d/my-cron-job
-
-# Run the command on container startup
-CMD ["cron", "-f"]
+# Добавление команды для записи логов
+RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
