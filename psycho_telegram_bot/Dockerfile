@@ -10,10 +10,10 @@ WORKDIR /psycho_telegram_bot
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install dependencies, добавляем supervisor
+# install dependencies
 RUN apk update \
-    && apk add --no-cache curl postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron supervisor \
-    && pip install --upgrade pip
+&& apk add --no-cache postgresql-dev gcc python3-dev musl-dev libffi-dev openssl-dev rust cargo dcron \
+&& pip install --upgrade pip
 
 # install python dependencies
 COPY ./requirements.txt .
@@ -31,13 +31,11 @@ RUN mkdir -p /psycho_telegram_bot/staticfiles
 # collect static files
 RUN python manage.py collectstatic --no-input
 
-# copy schedule.sh script and make sure directory exists
-RUN mkdir -p /psycho_telegram_bot \
-    && cp ./shedule.sh /psycho_telegram_bot/shedule.sh \
-    && chmod +x /psycho_telegram_bot/shedule.sh
+# copy schedule.sh script
+COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
+RUN chmod +x /psycho_telegram_bot/shedule.sh
 
-# copy supervisor config
-COPY supervisord.conf /etc/supervisord.conf
-
-# run supervisor
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+# Add the cron job
+RUN echo "41 16 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+# Run cron and the telegram bot
+CMD ["sh", "-c", "crond -f && python app/telegram_bot.py"]
