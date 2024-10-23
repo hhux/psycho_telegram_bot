@@ -37,9 +37,17 @@ services:
 
   telegram_bot:
     build: .
-    command: crond -f && python app/telegram_bot.py
+    command: python app/telegram_bot.py
     depends_on:
       - backend
+    networks:
+      - psycho_network
+
+  cron:
+    build: .
+    command: crond -f
+    volumes:
+      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh
     networks:
       - psycho_network
 
