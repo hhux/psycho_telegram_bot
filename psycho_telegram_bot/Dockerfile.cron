@@ -4,7 +4,8 @@ FROM python:3.8.3-alpine
 RUN apk add --no-cache \
     curl \
     dcron \
-    tzdata
+    tzdata \
+    tini
 
 WORKDIR /psycho_telegram_bot
 
@@ -21,4 +22,6 @@ RUN mkdir -p /var/log/cron && \
 RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron/cron.log 2>&1" > /etc/crontabs/root && \
     chmod 0644 /etc/crontabs/root
 
-CMD ["crond", "-f", "-d", "8"]
+# Использование tini как entrypoint
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["crond", "-f", "-l", "8"]
