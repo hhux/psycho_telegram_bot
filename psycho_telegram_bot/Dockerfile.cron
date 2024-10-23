@@ -6,18 +6,23 @@ RUN apk add --no-cache \
     dcron \
     tzdata
 
-# Установка московского времени
-RUN cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
-    echo "Europe/Moscow" > /etc/timezone
-
 WORKDIR /psycho_telegram_bot
 
 # Копирование и установка прав на скрипт
 COPY ./shedule.sh /psycho_telegram_bot/
 RUN chmod +x /psycho_telegram_bot/shedule.sh
 
-# Создание лог-файла для cron
-RUN touch /var/log/cron.log
+# Создание директории для логов
+RUN mkdir -p /var/log/cron && \
+    touch /var/log/cron/cron.log && \
+    chmod 0644 /var/log/cron/cron.log
 
-# Добавление команды для записи логов
-RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+# Создание crontab файла
+RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron/cron.log 2>&1" > /etc/crontabs/root && \
+    chmod 0644 /etc/crontabs/root
+
+# Проверка конфигурации
+RUN crontab -l
+
+# Запуск crond в foreground режиме
+CMD ["crond", "-f", "-d", "8"]
