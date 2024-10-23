@@ -23,6 +23,7 @@ services:
       - POSTGRES_DB=psycho_dev
     networks:
       - psycho_network
+      - backend
 
   nginx:
     build: ./nginx
