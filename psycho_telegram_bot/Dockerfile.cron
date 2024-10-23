@@ -19,7 +19,7 @@ RUN mkdir -p /var/log/cron && \
     chmod 0644 /var/log/cron/cron.log
 
 # Создание crontab файла с правильным синтаксисом
-RUN echo "* * * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron/cron.log 2>&1" > /etc/crontabs/root && \
+RUN echo "0 0 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron/cron.log 2>&1" > /etc/crontabs/root && \
     chmod 0644 /etc/crontabs/root
 
 # Использование tini как entrypoint
