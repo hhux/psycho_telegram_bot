@@ -7,8 +7,8 @@ FROM python:3.8.3-alpine
 WORKDIR /psycho_telegram_bot
 
 # set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # install dependencies
 RUN apk update \
@@ -37,9 +37,10 @@ RUN mkdir -p /var/log
 # copy schedule.sh script
 COPY ./shedule.sh /psycho_telegram_bot/shedule.sh
 RUN chmod +x /psycho_telegram_bot/shedule.sh
+RUN chmod +x /psycho_telegram_bot/shedule.sh
 
 # Add the cron job
-RUN echo "25 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+RUN echo "26 11 * * * /psycho_telegram_bot/shedule.sh >> /var/log/cron.log 2>&1" > /etc/crontabs/root
 
 # Set entrypoint for the container
-ENTRYPOINT ["crond", "-b"]
+ENTRYPOINT ["crond", "-f"]
