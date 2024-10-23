@@ -45,9 +45,9 @@ services:
 
   cron:
     build: .
-    command: ["/bin/sh", "-c", "echo '3 1 1 4 * /psycho_telegram_bot/shedule.sh' | crontab - && crond -f"]
+    command: ["/bin/sh", "-c", "echo '* * * * * /psycho_telegram_bot/shedule.sh' | crontab - && crond -f"]
     volumes:
-      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh
+      - ./psycho_telegram_bot/shedule.sh:/psycho_telegram_bot/shedule.sh:ro
     networks:
       - psycho_network
 
