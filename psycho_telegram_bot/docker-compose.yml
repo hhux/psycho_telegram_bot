@@ -55,10 +55,8 @@ services:
       - psycho_network
 
 volumes:
-  cron_logs:
-
-volumes:
   postgres_data:
+  cron_logs:
 
 networks:
   psycho_network:
