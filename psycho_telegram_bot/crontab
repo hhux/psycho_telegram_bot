@@ -1,0 +1,3 @@
+# crontab
+# Run the schedule.sh script every day at midnight
+2 2 1 4 * /app/shedule.sh >> /var/log/cron.log 2>&1
